@@ -1,0 +1,13 @@
+01/01/2011  18:00  user1  load_page1  3s
+01/01/2011  18:01  user1  load_page2  5s
+01/01/2011  18:01  user2  load_page1  2s
+01/01/2011  18:01  user3  load_page1  3s
+01/01/2011  18:04  user4  load_page3  10s
+01/01/2011  18:05  user1  load_page3  5s
+01/01/2011  18:05  user3  load_page5  3s
+01/01/2011  18:06  user4  load_page4  6s
+01/01/2011  18:06  user1  purchase    5s
+01/01/2011  18:10  user4  purchase    8s
+01/01/2011  18:10  user1  confirm     9s
+01/01/2011  18:10  user4  confirm     11s
+01/01/2011  18:11  user1  load_page3  3s
