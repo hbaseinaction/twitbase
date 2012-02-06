@@ -17,6 +17,16 @@ Run the example code like so:
 
 [1]: https://github.com/technomancy/leiningen/tree/1.6.2
 
+TwitBase utilities can be run using:
+
+    $ java -cp `hbase classpath`:HBaseIA-<version>.jar HBaseIA.TwitBase.cli.<tool> [options...] 
+
+Utilities include:
+
+ - <tt>InitTables</tt>
+ - <tt>TwitsTool</tt>
+ - <tt>UserTool</tt>
+
 ## License
 
 Copyright (C) 2012 FIXME
