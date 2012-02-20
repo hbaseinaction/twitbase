@@ -117,6 +117,19 @@ public class UsersDAO {
 		return ret;
 	}
 
+	public long incTweetCount(String user) throws IOException {
+		HTableInterface users = pool.getTable(TABLE_NAME);
+
+		long ret = users.incrementColumnValue(
+			Md5Utils.md5sum(user.toLowerCase()),
+			INFO_FAM,
+			TWEETS_COL,
+			1L);
+
+		pool.putTable(users);
+		return ret;
+	}
+
 	private static class User
 			extends HBaseIA.TwitBase.model.User {
 		private User(Result r) {

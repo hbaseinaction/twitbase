@@ -11,7 +11,7 @@ public abstract class User {
 	@Override
 	public String toString() {
 		return String.format(
-				"<User: %s, %s, %s>",
-				user, name, email);
+				"<User: %s, %s, %s, %s>",
+				user, name, email, tweetCount);
 	}
 }

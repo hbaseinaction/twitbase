@@ -28,18 +28,20 @@ public class TwitsTool {
 		}
 
 		HTablePool pool = new HTablePool();
-		TwitsDAO dao = new TwitsDAO(pool);
+		TwitsDAO twitsDao = new TwitsDAO(pool);
+		UsersDAO usersDao = new UsersDAO(pool);
 
 		if ("post".equals(args[0])) {
 			DateTime now = new DateTime();
 			log.debug(String.format("Posting twit at ...", now));
-			dao.postTwit(args[1], now, args[2]);
-			Twit t = dao.getTwit(args[1], now);
+			twitsDao.postTwit(args[1], now, args[2]);
+			Twit t = twitsDao.getTwit(args[1], now);
+			usersDao.incTweetCount(args[1]);
 			System.out.println("Successfully posted " + t);
 		}
 
 		if ("list".equals(args[0])) {
-			List<Twit> twits = dao.list(args[1]);
+			List<Twit> twits = twitsDao.list(args[1]);
 			log.info(String.format("Found %s twits.", twits.size()));
 			for(Twit t : twits) {
 				System.out.println(t);
