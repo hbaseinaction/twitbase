@@ -125,21 +125,21 @@ public class TwitsDAO {
 
 	private static class Twit extends HBaseIA.TwitBase.model.Twit {
 
-		public Twit(Result r) {
+		private Twit(Result r) {
 			this(
 					r.getColumnLatest(TWITS_FAM, USER_COL).getValue(),
 					Arrays.copyOfRange(r.getRow(), Md5Utils.MD5_LENGTH+1, longLength),
 					r.getColumnLatest(TWITS_FAM, TWIT_COL).getValue());
 		}
 
-		public Twit(byte[] user, byte[] dt, byte[] text) {
+		private Twit(byte[] user, byte[] dt, byte[] text) {
 			this(
 					Bytes.toString(user),
 					new DateTime(-1 * Bytes.toLong(dt)),
 					Bytes.toString(text));
 		}
 
-		public Twit(String user, DateTime dt, String text) {
+		private Twit(String user, DateTime dt, String text) {
 			this.user = user;
 			this.dt = dt;
 			this.text = text;

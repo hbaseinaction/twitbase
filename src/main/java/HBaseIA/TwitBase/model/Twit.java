@@ -11,7 +11,7 @@ public abstract class Twit {
 	@Override
 	public String toString() {
 		return String.format(
-				"<Twit %s %s %s>",
+				"<Twit: %s %s %s>",
 				user, dt, text.substring(0, 35));
 	}
 }

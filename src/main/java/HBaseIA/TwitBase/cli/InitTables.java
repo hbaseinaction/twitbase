@@ -23,7 +23,6 @@ public class InitTables {
 			System.out.println("Creating User table...");
 			HTableDescriptor desc = new HTableDescriptor(UsersDAO.TABLE_NAME);
 			HColumnDescriptor c = new HColumnDescriptor(UsersDAO.INFO_FAM);
-			c.setMaxVersions(0);
 			desc.addFamily(c);
 			admin.createTable(desc);
 			System.out.println("User table created.");
@@ -35,7 +34,7 @@ public class InitTables {
 			System.out.println("Creating Twits table...");
 			HTableDescriptor desc = new HTableDescriptor(TwitsDAO.TABLE_NAME);
 			HColumnDescriptor c = new HColumnDescriptor(TwitsDAO.TWITS_FAM);
-			c.setMaxVersions(0);
+			c.setMaxVersions(1);
 			desc.addFamily(c);
 			admin.createTable(desc);
 			System.out.println("Twits table created.");
