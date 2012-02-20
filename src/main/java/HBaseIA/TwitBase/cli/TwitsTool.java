@@ -1,8 +1,10 @@
 package HBaseIA.TwitBase.cli;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.hadoop.hbase.client.HTablePool;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
 import HBaseIA.TwitBase.hbase.TwitsDAO;
@@ -10,6 +12,8 @@ import HBaseIA.TwitBase.hbase.UsersDAO;
 import HBaseIA.TwitBase.model.Twit;
 
 public class TwitsTool {
+
+	private static final Logger log = Logger.getLogger(TwitsTool.class);
 
 	public static final String usage =
 			"twitstool action ...\n" +
@@ -27,23 +31,21 @@ public class TwitsTool {
 		TwitsDAO dao = new TwitsDAO(pool);
 
 		if ("post".equals(args[0])) {
-			System.out.println("Posting twit...");
 			DateTime now = new DateTime();
+			log.debug(String.format("Posting twit at ...", now));
 			dao.postTwit(args[1], now, args[2]);
 			Twit t = dao.getTwit(args[1], now);
 			System.out.println("Successfully posted " + t);
-
-			pool.closeTablePool(UsersDAO.TABLE_NAME);
-			System.exit(0);
 		}
 
 		if ("list".equals(args[0])) {
-			for(Twit t : dao.list(args[1])) {
+			List<Twit> twits = dao.list(args[1]);
+			log.info(String.format("Found %s twits.", twits.size()));
+			for(Twit t : twits) {
 				System.out.println(t);
 			}
-
-			pool.closeTablePool(UsersDAO.TABLE_NAME);
-			System.exit(0);
 		}
+
+		pool.closeTablePool(TwitsDAO.TABLE_NAME);
 	}
 }

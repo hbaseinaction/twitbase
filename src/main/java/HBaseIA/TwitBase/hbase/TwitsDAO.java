@@ -13,6 +13,7 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
 import HBaseIA.TwitBase.Md5Utils;
@@ -28,6 +29,8 @@ public class TwitsDAO {
 
 	private HTablePool pool;
 
+	private static final Logger log = Logger.getLogger(TwitsDAO.class);
+
 	public TwitsDAO(HTablePool pool) {
 		this.pool = pool;
 	}
@@ -41,7 +44,7 @@ public class TwitsDAO {
 		byte[] timestamp = Bytes.toBytes(-1 * dt.getMillis());
 		byte[] rowKey = new byte[Md5Utils.MD5_LENGTH + longLength];
 		System.arraycopy(userHash, 0, rowKey, 0, Md5Utils.MD5_LENGTH);
-		System.arraycopy(timestamp, 0, rowKey, Md5Utils.MD5_LENGTH+1, longLength);
+		System.arraycopy(timestamp, 0, rowKey, Md5Utils.MD5_LENGTH, longLength);
 		return rowKey;
 	}
 
@@ -59,14 +62,14 @@ public class TwitsDAO {
 		return g;
 	}
 
-//	private static String to_str(byte[] xs) {
-//		StringBuilder sb = new StringBuilder(xs.length *2);
-//		for(byte b : xs) {
-//			sb.append(b).append(" ");
-//		}
-//		sb.deleteCharAt(sb.length() -1);
-//		return sb.toString();
-//	}
+	private static String to_str(byte[] xs) {
+		StringBuilder sb = new StringBuilder(xs.length *2);
+		for(byte b : xs) {
+			sb.append(b).append(" ");
+		}
+		sb.deleteCharAt(sb.length() -1);
+		return sb.toString();
+	}
 
 	private static Scan mkScan(String user) {
 		byte[] startRow = new byte[Md5Utils.MD5_LENGTH + longLength];
@@ -76,8 +79,8 @@ public class TwitsDAO {
 		System.arraycopy(userHash, 0, stopRow, 0, userHash.length);
 		stopRow[userHash.length-1]++;
 
-//		System.out.println("Scan starting at: '" + to_str(startRow) + "'");
-//		System.out.println("Scan stopping at: '" + to_str(stopRow) + "'");
+		log.debug("Scan starting at: '" + to_str(startRow) + "'");
+		log.debug("Scan stopping at: '" + to_str(stopRow) + "'");
 
 		Scan s = new Scan(startRow, stopRow);
 		s.addColumn(TWITS_FAM, USER_COL);
@@ -128,7 +131,7 @@ public class TwitsDAO {
 		private Twit(Result r) {
 			this(
 					r.getColumnLatest(TWITS_FAM, USER_COL).getValue(),
-					Arrays.copyOfRange(r.getRow(), Md5Utils.MD5_LENGTH+1, longLength),
+					Arrays.copyOfRange(r.getRow(), Md5Utils.MD5_LENGTH, Md5Utils.MD5_LENGTH + longLength),
 					r.getColumnLatest(TWITS_FAM, TWIT_COL).getValue());
 		}
 
