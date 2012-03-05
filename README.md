@@ -5,8 +5,8 @@ FIXME: write description
 ## Usage
 
 Build managed via [leiningen][1]. A version of lein is included with
-the project source. It will install itself into your home directory
-the first time it is run.
+the project source. It will retrieve its necessary dependencies the
+first time it is run.
 
 To build a jar suitable for running the examples:
 
@@ -20,13 +20,13 @@ Run the example code like so:
 
 TwitBase utilities can be run using:
 
-    $ java -cp HBaseIA-<version>.jar:`hbase classpath` HBaseIA.TwitBase.cli.<tool> [options...] 
+    $ ./lein run <alias> [options...]
 
-Utilities include:
+Utility aliases include:
 
- - <tt>InitTables</tt>
- - <tt>TwitsTool</tt>
- - <tt>UserTool</tt>
+ - <tt>:init-tables</tt>
+ - <tt>:twits-tool</tt>
+ - <tt>:users-tool</tt>
 
 ## License
 

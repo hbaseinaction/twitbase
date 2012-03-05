@@ -5,4 +5,7 @@
   :omit-source true
   :javac-options {:debug "true"
                   :target "1.5"}
-  :java-source-path "src/main/java")
+  :java-source-path "src/main/java"
+  :run-aliases {:users-tool HBaseIA.TwitBase.cli.UsersTool
+                :twits-tool HBaseIA.TwitBase.cli.TwitsTool
+                :init-tables HBaseIA.TwitBase.cli.InitTables})
