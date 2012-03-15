@@ -1,4 +1,4 @@
-(ns HBaseIA.core
+(ns HBaseIA.TwitBase.repl
   "Convienence library."
   (:require [clojure.java.io :as io])
   (:import
