@@ -23,8 +23,8 @@ public class TwitsDAO {
   public static final byte[] TABLE_NAME = Bytes.toBytes("twits");
   public static final byte[] TWITS_FAM  = Bytes.toBytes("t");
 
-  private static final byte[] USER_COL   = Bytes.toBytes("user");
-  private static final byte[] TWIT_COL   = Bytes.toBytes("text");
+  public static final byte[] USER_COL   = Bytes.toBytes("user");
+  public static final byte[] TWIT_COL   = Bytes.toBytes("text");
   private static final int longLength = 8; // bytes
 
   private HTablePool pool;

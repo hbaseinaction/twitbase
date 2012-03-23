@@ -28,6 +28,8 @@ public class UsersDAO {
   private static final byte[] PASS_COL   = Bytes.toBytes("password");
   private static final byte[] TWEETS_COL = Bytes.toBytes("tweet_count");
 
+  public static final byte[] HAMLET_COL  = Bytes.toBytes("hamlet_tag");
+
   private static final Logger log = Logger.getLogger(UsersDAO.class);
 
   private HTablePool pool;
@@ -53,6 +55,12 @@ public class UsersDAO {
     p.add(INFO_FAM, EMAIL_COL, Bytes.toBytes(u.email));
     p.add(INFO_FAM, PASS_COL, Bytes.toBytes(u.password));
     return p;
+  }
+
+  public static Put mkPut(String username, byte[] fam, byte[] qual, byte[] val) {
+	  Put p = new Put(Md5Utils.md5sum(username.toLowerCase()));
+	  p.add(fam, qual, val);
+	  return p;
   }
 
   private static Delete mkDel(String user) {
