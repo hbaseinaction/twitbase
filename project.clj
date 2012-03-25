@@ -13,6 +13,13 @@
                   :target "1.5"}
   :source-path "src/main/clj"
   :java-source-path "src/main/java"
-  :run-aliases {:users-tool  HBaseIA.TwitBase.cli.UsersTool
+  :run-aliases {;; twitbase cli tools
+                :users-tool  HBaseIA.TwitBase.cli.UsersTool
                 :twits-tool  HBaseIA.TwitBase.cli.TwitsTool
-                :init-tables HBaseIA.TwitBase.cli.InitTables})
+                :init-tables HBaseIA.TwitBase.cli.InitTables
+                ;; convienence utils
+                :load-users  HBaseIA.TwitBase.repl/load-users
+                :load-twits  HBaseIA.TwitBase.repl/load-twits
+                ;; short-hand to launch mapreduce jobs locally
+                :shakespeare HBaseIA.TwitBase.mapreduce.CountShakespeare
+                :tag-hamlet  HBaseIA.TwitBase.mapreduce.HamletTagger})
