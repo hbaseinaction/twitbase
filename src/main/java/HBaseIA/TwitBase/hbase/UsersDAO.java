@@ -85,7 +85,7 @@ public class UsersDAO {
     Put p = mkPut(new User(user, name, email, password));
     users.put(p);
 
-    pool.putTable(users);
+    users.close();
   }
 
   public HBaseIA.TwitBase.model.User getUser(String user) throws IOException {
@@ -99,7 +99,7 @@ public class UsersDAO {
     }
 
     User u = new User(result);
-    pool.putTable(users);
+    users.close();
     return u;
   }
 
@@ -109,7 +109,7 @@ public class UsersDAO {
     Delete d = mkDel(user);
     users.delete(d);
 
-    pool.putTable(users);
+    users.close();
   }
 
   public List<HBaseIA.TwitBase.model.User> getUsers() throws IOException {
@@ -121,7 +121,7 @@ public class UsersDAO {
       ret.add(new User(r));
     }
 
-    pool.putTable(users);
+    users.close();
     return ret;
   }
 
@@ -134,7 +134,7 @@ public class UsersDAO {
                                           TWEETS_COL,
                                           1L);
 
-    pool.putTable(users);
+    users.close();
     return ret;
   }
 

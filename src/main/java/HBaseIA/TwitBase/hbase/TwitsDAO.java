@@ -95,7 +95,7 @@ public class TwitsDAO {
     Put p = mkPut(new Twit(user, dt, text));
     twits.put(p);
 
-    pool.putTable(twits);
+    twits.close();
   }
 
   public HBaseIA.TwitBase.model.Twit getTwit(String user, DateTime dt) throws IOException {
@@ -108,7 +108,7 @@ public class TwitsDAO {
       return null;
 
     Twit t = new Twit(result);
-    pool.putTable(twits);
+    twits.close();
     return t;
   }
 
@@ -122,7 +122,7 @@ public class TwitsDAO {
       ret.add(new Twit(r));
     }
 
-    pool.putTable(twits);
+    twits.close();
     return ret;
   }
 
