@@ -1,4 +1,4 @@
-# HBase In Action
+# HBase In Action (http://www.manning.com/dimidukkhurana)
 
 FIXME: write description
 
