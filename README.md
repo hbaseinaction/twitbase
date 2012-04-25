@@ -25,6 +25,7 @@ Utility aliases include:
  - <tt>:users-tool</tt>  :: tool for managing Users
  - <tt>:load-users</tt>  :: bulk-load random Users
  - <tt>:load-twits</tt>  :: bulk-load random Twits
+ - <tt>:timespent</tt>   :: run TimeSpent log processing MR job
  - <tt>:shakespeare</tt> :: run Shakespearean counter MR job
  - <tt>:tag-hamlet</tt>  :: run hamlet-tagging MR job
 

@@ -21,5 +21,6 @@
                 :load-users  HBaseIA.TwitBase.repl/load-users
                 :load-twits  HBaseIA.TwitBase.repl/load-twits
                 ;; short-hand to launch mapreduce jobs locally
+                :timespent   HBaseIA.TwitBase.mapreduce.TimeSpent
                 :shakespeare HBaseIA.TwitBase.mapreduce.CountShakespeare
                 :tag-hamlet  HBaseIA.TwitBase.mapreduce.HamletTagger})
