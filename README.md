@@ -1,36 +1,41 @@
-# HBase In Action (http://www.manning.com/dimidukkhurana)
+# HBase In Action
 
-FIXME: write description
+[http://www.manning.com/dimidukkhurana][0]
 
 ## Usage
 
-Build managed via [leiningen][1]. A version of lein is included with
-the project source. It will retrieve its necessary dependencies the
-first time it is run.
+Code is managed by maven. Be sure to install maven2 on your platform.
 
-To build the source:
+To build a self-contained jar:
 
-    $ ./lein deps, compile
+    $ mvn assembly:assembly
 
-[1]: https://github.com/technomancy/leiningen/tree/1.7.0
+TwitBase applications can be run using:
 
-TwitBase utilities can be run using:
+    $ java -cp target/HBaseIA-1.0.0-SNAPSHOT-jar-with-dependencies.jar <app> [options...]
 
-    $ ./lein run <alias> [options...]
+Utilities for interacting with TwitBase include:
 
-Utility aliases include:
+ - <tt>HBaseIA.TwitBase.cli.InitTables</tt> :: create TwitBase tables
+ - <tt>HBaseIA.TwitBase.cli.TwitsTool</tt> :: tool for managing Twits
+ - <tt>HBaseIA.TwitBase.cli.UsersTool</tt> :: tool for managing Users
+ - <tt>HBaseIA.TwitBase.cli.LoadUsers</tt> :: bulk-load random Users
+ - <tt>HBaseIA.TwitBase.cli.LoadTwits</tt> :: bulk-load random Twits
 
- - <tt>:init-tables</tt> :: create TwitBase tables
- - <tt>:twits-tool</tt>  :: tool for managing Twits
- - <tt>:users-tool</tt>  :: tool for managing Users
- - <tt>:load-users</tt>  :: bulk-load random Users
- - <tt>:load-twits</tt>  :: bulk-load random Twits
- - <tt>:timespent</tt>   :: run TimeSpent log processing MR job
- - <tt>:shakespeare</tt> :: run Shakespearean counter MR job
- - <tt>:tag-hamlet</tt>  :: run hamlet-tagging MR job
+The following MapReduce jobs can be launched the same way:
+
+ - <tt>HBaseIA.TwitBase.mapreduce.TimeSpent</tt> :: run TimeSpent log
+   processing MR job
+ - <tt>HBaseIA.TwitBase.mapreduce.CountShakespeare</tt> :: run
+   Shakespearean counter MR job
+ - <tt>HBaseIA.TwitBase.mapreduce.HamletTagger</tt> :: run
+   hamlet-tagging MR job
 
 ## License
 
-Copyright (C) 2012 FIXME
+Copyright (C) 2012 Nick Dimiduk, Amandeep Khurana
 
-Distributed under the Eclipse Public License, the same as Clojure.
+Distributed under the [Apache License, version 2.0][1], the same as HBase.
+
+[0]: http://www.manning.com/dimidukkhurana
+[1]: http://www.apache.org/licenses/LICENSE-2.0.html

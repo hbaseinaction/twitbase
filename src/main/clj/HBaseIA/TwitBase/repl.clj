@@ -60,14 +60,14 @@
 ;; Use these fns to populate TwitBase after table initialization.
 ;;
 
-(defn load-users
+(defn load-users-main
   "Load n random users."
   [n]
   (let [n (Integer. n)
         _ (-> (repeatedly n #'add-user-random)
               (doall))]))
 
-(defn load-twits
+(defn load-twits-main
   "Load n random twits per user."
   [n]
   (let [n (Integer. n)
@@ -75,3 +75,13 @@
                (map #(-> (repeatedly n (fn [] (twit-random (.user %))))
                          (doall)))
                (doall))]))
+
+(gen-class
+ :name HBaseIA.TwitBase.cli.LoadUsers
+ :prefix "load-users-"
+ :main true)
+
+(gen-class
+ :name HBaseIA.TwitBase.cli.LoadTwits
+ :prefix "load-twits-"
+ :main true)
