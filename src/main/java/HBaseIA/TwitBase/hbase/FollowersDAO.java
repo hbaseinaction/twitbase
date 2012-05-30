@@ -4,15 +4,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.HTablePool;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
+import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.client.coprocessor.Batch;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import HBaseIA.TwitBase.Md5Utils;
+import HBaseIA.TwitBase.coprocessors.RelationCountProtocol;
 
 /**
  * TODO: complete me with Ch05. Don't forget to update
@@ -91,14 +95,14 @@ public class FollowersDAO {
 
   public void addFollowing(String from, String to) throws IOException {
 
-	    HTableInterface followers = pool.getTable(TABLE_NAME);
+    HTableInterface followers = pool.getTable(TABLE_NAME);
 
-	    Put p = new Put(mkFollowingRowKey(from, to));
-	    p.add(FOLLOWERS_FAM, REL_FROM, Bytes.toBytes(from));
-	    p.add(FOLLOWERS_FAM, REL_TO, Bytes.toBytes(to));
-	    followers.put(p);
+    Put p = new Put(mkFollowingRowKey(from, to));
+    p.add(FOLLOWERS_FAM, REL_FROM, Bytes.toBytes(from));
+    p.add(FOLLOWERS_FAM, REL_TO, Bytes.toBytes(to));
+    followers.put(p);
 
-	    followers.close();
+    followers.close();
   }
 
   public List<HBaseIA.TwitBase.model.Relation> listRelations() throws IOException {
@@ -113,6 +117,81 @@ public class FollowersDAO {
 
     followers.close();
     return ret;
+  }
+
+  public long followersCountScan (String user) throws IOException {
+    HTableInterface followers = pool.getTable(TABLE_NAME);
+
+    final byte[] startKey = new byte[FOLLOWING_RK_LEN];
+    int offset = 0;
+    offset = Bytes.putBytes(
+      startKey,
+      offset,
+      FOLLOWING_RELATION,
+      0,
+      FOLLOWING_RELATION.length);
+    offset = Bytes.putBytes(
+      startKey,
+      offset,
+      Md5Utils.md5sum(user),
+      0,
+      Md5Utils.MD5_LENGTH);
+
+    final byte[] endKey = new byte[FOLLOWING_RK_LEN];
+    Bytes.putBytes(endKey, 0, startKey, 0, offset);
+    endKey[offset -1]++;
+
+    long sum = 0;
+    ResultScanner rs = followers.getScanner(new Scan(startKey, endKey));
+    for(Result r : rs) {
+      sum++;
+    }
+    return sum;
+  }
+
+  public long followersCount (String user) throws Throwable {
+    HTableInterface followers = pool.getTable(TABLE_NAME);
+
+    final byte[] startKey = new byte[FOLLOWING_RK_LEN];
+    int offset = 0;
+    offset = Bytes.putBytes(
+      startKey,
+      offset,
+      FOLLOWING_RELATION,
+      0,
+      FOLLOWING_RELATION.length);
+    offset = Bytes.putBytes(
+      startKey,
+      offset,
+      Md5Utils.md5sum(user),
+      0,
+      Md5Utils.MD5_LENGTH);
+
+    final byte[] endKey = new byte[FOLLOWING_RK_LEN];
+    Bytes.putBytes(endKey, 0, startKey, 0, offset);
+    endKey[offset -1]++;
+
+    Batch.Call<RelationCountProtocol, Long> callable =
+      new Batch.Call<RelationCountProtocol, Long>() {
+      @Override
+      public Long call(RelationCountProtocol instance)
+      throws IOException {
+        return instance.count(startKey, endKey);
+      }
+    };
+
+    Map<byte[], Long> results =
+      followers.coprocessorExec(
+        RelationCountProtocol.class,
+        startKey,
+        endKey,
+        callable);
+
+    long sum = 0;
+    for(Map.Entry<byte[], Long> e : results.entrySet()) {
+      sum += e.getValue().longValue();
+    }
+    return sum;
   }
 
   private static class Relation extends HBaseIA.TwitBase.model.Relation {

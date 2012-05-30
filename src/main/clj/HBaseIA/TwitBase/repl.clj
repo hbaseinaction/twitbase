@@ -57,10 +57,18 @@
   (seq (.list twits user)))
 
 (defn add-follows [userA userB]
-  (.addFollows followers userA userB))
+  (do ;; DERP! repalce with Observer!
+    (.addFollows followers userA userB)
+    (.addFollowing followers userA userB)))
 
 (defn list-relations []
   (seq (.listRelations followers)))
+
+(defn followers-count-scan [user]
+  (.followersCountScan followers user))
+
+(defn followers-count-coproc [user]
+  (.followersCount followers user))
 
 ;;
 ;; cli mains
