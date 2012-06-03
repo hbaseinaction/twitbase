@@ -15,8 +15,6 @@ import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.log4j.Logger;
 
-import HBaseIA.TwitBase.Md5Utils;
-
 public class UsersDAO {
 
   public static final byte[] TABLE_NAME = Bytes.toBytes("users");
@@ -41,7 +39,7 @@ public class UsersDAO {
   private static Get mkGet(String user) throws IOException {
     log.debug(String.format("Creating Get for %s", user));
 
-    Get g = new Get(Md5Utils.md5sum(user.toLowerCase()));
+    Get g = new Get(Bytes.toBytes(user));
     g.addFamily(INFO_FAM);
     return g;
   }
@@ -49,7 +47,7 @@ public class UsersDAO {
   private static Put mkPut(User u) {
     log.debug(String.format("Creating Put for %s", u));
 
-    Put p = new Put(Md5Utils.md5sum(u.user.toLowerCase()));
+    Put p = new Put(Bytes.toBytes(u.user));
     p.add(INFO_FAM, USER_COL, Bytes.toBytes(u.user));
     p.add(INFO_FAM, NAME_COL, Bytes.toBytes(u.name));
     p.add(INFO_FAM, EMAIL_COL, Bytes.toBytes(u.email));
@@ -57,16 +55,19 @@ public class UsersDAO {
     return p;
   }
 
-  public static Put mkPut(String username, byte[] fam, byte[] qual, byte[] val) {
-	  Put p = new Put(Md5Utils.md5sum(username.toLowerCase()));
-	  p.add(fam, qual, val);
-	  return p;
+  public static Put mkPut(String username,
+                          byte[] fam,
+                          byte[] qual,
+                          byte[] val) {
+    Put p = new Put(Bytes.toBytes(username));
+    p.add(fam, qual, val);
+    return p;
   }
 
   private static Delete mkDel(String user) {
     log.debug(String.format("Creating Delete for %s", user));
 
-    Delete d = new Delete(Md5Utils.md5sum(user.toLowerCase()));
+    Delete d = new Delete(Bytes.toBytes(user));
     return d;
   }
 
@@ -76,9 +77,11 @@ public class UsersDAO {
     return s;
   }
 
-  public void addUser(
-                      String user, String name, String email,
-                      String password) throws IOException {
+  public void addUser(String user,
+                      String name,
+                      String email,
+                      String password)
+    throws IOException {
 
     HTableInterface users = pool.getTable(TABLE_NAME);
 
@@ -88,7 +91,8 @@ public class UsersDAO {
     users.close();
   }
 
-  public HBaseIA.TwitBase.model.User getUser(String user) throws IOException {
+  public HBaseIA.TwitBase.model.User getUser(String user)
+    throws IOException {
     HTableInterface users = pool.getTable(TABLE_NAME);
 
     Get g = mkGet(user);
@@ -112,11 +116,13 @@ public class UsersDAO {
     users.close();
   }
 
-  public List<HBaseIA.TwitBase.model.User> getUsers() throws IOException {
+  public List<HBaseIA.TwitBase.model.User> getUsers()
+    throws IOException {
     HTableInterface users = pool.getTable(TABLE_NAME);
 
     ResultScanner results = users.getScanner(mkScan());
-    ArrayList<HBaseIA.TwitBase.model.User> ret = new ArrayList<HBaseIA.TwitBase.model.User>();
+    ArrayList<HBaseIA.TwitBase.model.User> ret
+      = new ArrayList<HBaseIA.TwitBase.model.User>();
     for(Result r : results) {
       ret.add(new User(r));
     }
@@ -128,8 +134,7 @@ public class UsersDAO {
   public long incTweetCount(String user) throws IOException {
     HTableInterface users = pool.getTable(TABLE_NAME);
 
-    long ret = users.incrementColumnValue(
-                                          Md5Utils.md5sum(user.toLowerCase()),
+    long ret = users.incrementColumnValue(Bytes.toBytes(user),
                                           INFO_FAM,
                                           TWEETS_COL,
                                           1L);
@@ -141,32 +146,35 @@ public class UsersDAO {
   private static class User
     extends HBaseIA.TwitBase.model.User {
     private User(Result r) {
-      this(
-           r.getValue(INFO_FAM, USER_COL),
+      this(r.getValue(INFO_FAM, USER_COL),
            r.getValue(INFO_FAM, NAME_COL),
            r.getValue(INFO_FAM, EMAIL_COL),
            r.getValue(INFO_FAM, PASS_COL),
-           r.getValue(INFO_FAM, TWEETS_COL) == null ?
-           Bytes.toBytes(0L) :
-							r.getValue(INFO_FAM, TWEETS_COL));
-		}
+           r.getValue(INFO_FAM, TWEETS_COL) == null
+             ? Bytes.toBytes(0L)
+             : r.getValue(INFO_FAM, TWEETS_COL));
+    }
 
-		private User(
-				byte[] user, byte[] name, byte[] email,
-				byte[] password, byte[] tweetCount) {
-			this(
-					Bytes.toString(user),
-					Bytes.toString(name),
-					Bytes.toString(email),
-					Bytes.toString(password));
-			this.tweetCount = Bytes.toLong(tweetCount);
-		}
+    private User(byte[] user,
+                 byte[] name,
+                 byte[] email,
+                 byte[] password,
+                 byte[] tweetCount) {
+      this(Bytes.toString(user),
+           Bytes.toString(name),
+           Bytes.toString(email),
+           Bytes.toString(password));
+      this.tweetCount = Bytes.toLong(tweetCount);
+    }
 
-		private User(String user, String name, String email, String password) {
-			this.user = user;
-			this.name = name;
-			this.email = email;
-			this.password = password;
-		}
-	}
+    private User(String user,
+                 String name,
+                 String email,
+                 String password) {
+      this.user = user;
+      this.name = name;
+      this.email = email;
+      this.password = password;
+    }
+  }
 }
