@@ -20,11 +20,11 @@ public class UsersDAO {
   public static final byte[] TABLE_NAME = Bytes.toBytes("users");
   public static final byte[] INFO_FAM   = Bytes.toBytes("info");
 
-  private static final byte[] USER_COL   = Bytes.toBytes("user");
-  private static final byte[] NAME_COL   = Bytes.toBytes("name");
-  private static final byte[] EMAIL_COL  = Bytes.toBytes("email");
-  private static final byte[] PASS_COL   = Bytes.toBytes("password");
-  private static final byte[] TWEETS_COL = Bytes.toBytes("tweet_count");
+  public static final byte[] USER_COL   = Bytes.toBytes("user");
+  public static final byte[] NAME_COL   = Bytes.toBytes("name");
+  public static final byte[] EMAIL_COL  = Bytes.toBytes("email");
+  public static final byte[] PASS_COL   = Bytes.toBytes("password");
+  public static final byte[] TWEETS_COL = Bytes.toBytes("tweet_count");
 
   public static final byte[] HAMLET_COL  = Bytes.toBytes("hamlet_tag");
 
