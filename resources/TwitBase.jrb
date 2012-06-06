@@ -1,0 +1,35 @@
+#!/usr/bin/env hbase shell
+
+def list_users()
+  users_table = @hbase.table('users', @formatter)
+  scan = {"COLUMNS" => ['info:user', 'info:name', 'info:email']}
+  results = {}
+  users_table.scan(scan) do |row,col|
+    results[row] ||= {}
+    m = /^.*info:(.*), t.*value=(.*)$/.match(col)
+    results[row][m[1]] = m[2] if m
+  end
+
+  results.each do |row,vals|
+    puts "<User %s, %s, %s>" % [vals['user'], vals['name'], vals['email']]
+  end
+end
+
+def main(args)
+  if args.length == 0 || args[0] == 'help'
+    puts <<EOM
+TwitBase.jrb action ...
+  help - print this message and exit
+  list - list all installed users.
+EOM
+    exit
+  end
+
+  if args[0] == 'list'
+    list_users
+  end  
+
+  exit
+end
+
+main(ARGV)
