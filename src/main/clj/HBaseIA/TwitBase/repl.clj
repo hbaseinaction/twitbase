@@ -4,7 +4,7 @@
   (:import
    [java.util.concurrent Executors]
    [org.apache.hadoop.hbase.client HTablePool]
-   [HBaseIA.TwitBase.hbase FollowersDAO TwitsDAO UsersDAO]
+   [HBaseIA.TwitBase.hbase RelationsDAO TwitsDAO UsersDAO]
    [org.joda.time DateTime]))
 
 (def names
@@ -24,7 +24,7 @@
 (let [pool (HTablePool.)]
   (def users (UsersDAO. pool))
   (def twits (TwitsDAO. pool))
-  (def followers (FollowersDAO. pool)))
+  (def relations (RelationsDAO. pool)))
 
 (defn get-user [user] (.getUser users user))
 
@@ -58,17 +58,20 @@
 
 (defn add-follows [userA userB]
   (do ;; DERP! repalce with Observer!
-    (.addFollows followers userA userB)
-    (.addFollowing followers userA userB)))
+    (.addFollows relations userA userB)
+    (.addFollowed relations userA userB)))
 
-(defn list-relations []
-  (seq (.listRelations followers)))
+(defn list-follows []
+  (seq (.listFollows relations)))
 
-(defn followers-count-scan [user]
-  (.followersCountScan followers user))
+(defn list-followed []
+  (seq (.listFollowed relations)))
 
-(defn followers-count-coproc [user]
-  (.followersCount followers user))
+(defn followed-count-scan [user]
+  (.followedCountScan relations user))
+
+(defn followed-count-coproc [user]
+  (.followedCount relations user))
 
 ;;
 ;; cli mains

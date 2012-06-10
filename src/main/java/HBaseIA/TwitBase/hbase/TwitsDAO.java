@@ -21,10 +21,10 @@ import HBaseIA.TwitBase.Md5Utils;
 public class TwitsDAO {
 
   public static final byte[] TABLE_NAME = Bytes.toBytes("twits");
-  public static final byte[] TWITS_FAM  = Bytes.toBytes("t");
+  public static final byte[] TWITS_FAM  = Bytes.toBytes("twits");
 
   public static final byte[] USER_COL   = Bytes.toBytes("user");
-  public static final byte[] TWIT_COL   = Bytes.toBytes("text");
+  public static final byte[] TWIT_COL   = Bytes.toBytes("twit");
   private static final int longLength = 8; // bytes
 
   private HTablePool pool;
@@ -43,8 +43,10 @@ public class TwitsDAO {
     byte[] userHash = Md5Utils.md5sum(user);
     byte[] timestamp = Bytes.toBytes(-1 * dt.getMillis());
     byte[] rowKey = new byte[Md5Utils.MD5_LENGTH + longLength];
-    System.arraycopy(userHash, 0, rowKey, 0, Md5Utils.MD5_LENGTH);
-    System.arraycopy(timestamp, 0, rowKey, Md5Utils.MD5_LENGTH, longLength);
+
+    int offset = 0;
+    offset = Bytes.putBytes(rowKey, offset, userHash, 0, userHash.length);
+    Bytes.putBytes(rowKey, offset, timestamp, 0, timestamp.length);
     return rowKey;
   }
 
@@ -72,12 +74,10 @@ public class TwitsDAO {
   }
 
   private static Scan mkScan(String user) {
-    byte[] startRow = new byte[Md5Utils.MD5_LENGTH + longLength];
-    byte[] stopRow  = new byte[Md5Utils.MD5_LENGTH + longLength];
     byte[] userHash = Md5Utils.md5sum(user);
-    System.arraycopy(userHash, 0, startRow, 0, userHash.length);
-    System.arraycopy(userHash, 0, stopRow, 0, userHash.length);
-    stopRow[userHash.length-1]++;
+    byte[] startRow = Bytes.padTail(userHash, longLength); // 212d...866f00...
+    byte[] stopRow = Bytes.padTail(userHash, longLength);
+    stopRow[Md5Utils.MD5_LENGTH-1]++;                      // 212d...867000...
 
     log.debug("Scan starting at: '" + to_str(startRow) + "'");
     log.debug("Scan stopping at: '" + to_str(stopRow) + "'");

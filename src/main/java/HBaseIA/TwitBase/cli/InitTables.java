@@ -7,7 +7,7 @@ import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.util.Bytes;
 
-import HBaseIA.TwitBase.hbase.FollowersDAO;
+import HBaseIA.TwitBase.hbase.RelationsDAO;
 import HBaseIA.TwitBase.hbase.TwitsDAO;
 import HBaseIA.TwitBase.hbase.UsersDAO;
 
@@ -39,13 +39,19 @@ public class InitTables {
         admin.deleteTable(TwitsDAO.TABLE_NAME);
       }
 
-
-      if (admin.tableExists(FollowersDAO.TABLE_NAME)) {
-        System.out.printf("Deleting %s\n", Bytes.toString(FollowersDAO.TABLE_NAME));
-        if (admin.isTableEnabled(FollowersDAO.TABLE_NAME))
-          admin.disableTable(FollowersDAO.TABLE_NAME);
-        admin.deleteTable(FollowersDAO.TABLE_NAME);
+      if (admin.tableExists(RelationsDAO.FOLLOWS_TABLE_NAME)) {
+        System.out.printf("Deleting %s\n", Bytes.toString(RelationsDAO.FOLLOWS_TABLE_NAME));
+        if (admin.isTableEnabled(RelationsDAO.FOLLOWS_TABLE_NAME))
+          admin.disableTable(RelationsDAO.FOLLOWS_TABLE_NAME);
+        admin.deleteTable(RelationsDAO.FOLLOWS_TABLE_NAME);
       }
+
+      if (admin.tableExists(RelationsDAO.FOLLOWED_TABLE_NAME)) {
+          System.out.printf("Deleting %s\n", Bytes.toString(RelationsDAO.FOLLOWED_TABLE_NAME));
+          if (admin.isTableEnabled(RelationsDAO.FOLLOWED_TABLE_NAME))
+            admin.disableTable(RelationsDAO.FOLLOWED_TABLE_NAME);
+          admin.deleteTable(RelationsDAO.FOLLOWED_TABLE_NAME);
+        }
     }
 
     if (admin.tableExists(UsersDAO.TABLE_NAME)) {
@@ -71,16 +77,28 @@ public class InitTables {
       System.out.println("Twits table created.");
     }
 
-    if (admin.tableExists(FollowersDAO.TABLE_NAME)) {
-      System.out.println("Followers table already exisis.");
+    if (admin.tableExists(RelationsDAO.FOLLOWS_TABLE_NAME)) {
+      System.out.println("Follows table already exisis.");
     } else {
-      System.out.println("Creating Followers table...");
-      HTableDescriptor desc = new HTableDescriptor(FollowersDAO.TABLE_NAME);
-      HColumnDescriptor c = new HColumnDescriptor(FollowersDAO.FOLLOWERS_FAM);
+      System.out.println("Creating Follows table...");
+      HTableDescriptor desc = new HTableDescriptor(RelationsDAO.FOLLOWS_TABLE_NAME);
+      HColumnDescriptor c = new HColumnDescriptor(RelationsDAO.FOLLOWS_FAM);
       c.setMaxVersions(1);
       desc.addFamily(c);
       admin.createTable(desc);
-      System.out.println("Followers table created.");
+      System.out.println("Follows table created.");
     }
+
+    if (admin.tableExists(RelationsDAO.FOLLOWED_TABLE_NAME)) {
+        System.out.println("Followed table already exisis.");
+      } else {
+        System.out.println("Creating Followed table...");
+        HTableDescriptor desc = new HTableDescriptor(RelationsDAO.FOLLOWED_TABLE_NAME);
+        HColumnDescriptor c = new HColumnDescriptor(RelationsDAO.FOLLOWED_FAM);
+        c.setMaxVersions(1);
+        desc.addFamily(c);
+        admin.createTable(desc);
+        System.out.println("Followed table created.");
+      }
   }
 }
