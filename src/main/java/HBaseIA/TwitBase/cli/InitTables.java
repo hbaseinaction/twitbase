@@ -82,7 +82,7 @@ public class InitTables {
     } else {
       System.out.println("Creating Follows table...");
       HTableDescriptor desc = new HTableDescriptor(RelationsDAO.FOLLOWS_TABLE_NAME);
-      HColumnDescriptor c = new HColumnDescriptor(RelationsDAO.FOLLOWS_FAM);
+      HColumnDescriptor c = new HColumnDescriptor(RelationsDAO.RELATION_FAM);
       c.setMaxVersions(1);
       desc.addFamily(c);
       admin.createTable(desc);
@@ -94,7 +94,7 @@ public class InitTables {
       } else {
         System.out.println("Creating Followed table...");
         HTableDescriptor desc = new HTableDescriptor(RelationsDAO.FOLLOWED_TABLE_NAME);
-        HColumnDescriptor c = new HColumnDescriptor(RelationsDAO.FOLLOWED_FAM);
+        HColumnDescriptor c = new HColumnDescriptor(RelationsDAO.RELATION_FAM);
         c.setMaxVersions(1);
         desc.addFamily(c);
         admin.createTable(desc);

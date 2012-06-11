@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.HTablePool;
 import org.apache.hadoop.hbase.client.Put;
@@ -20,13 +21,14 @@ import HBaseIA.TwitBase.coprocessors.RelationCountProtocol;
 
 public class RelationsDAO {
 
-  public static final byte[] FOLLOWS_TABLE_NAME = Bytes.toBytes("follows");
-  public static final byte[] FOLLOWED_TABLE_NAME = Bytes.toBytes("followed");
-  public static final byte[] FOLLOWS_FAM = Bytes.toBytes("follows");
-  public static final byte[] FOLLOWED_FAM = Bytes.toBytes("followed");
+  // md5(id_from)md5(id_to) -> 'f':id_to=name_to
+  // md5(id_from)md5(id_to) -> 'f':'to'=id_to, 'f':'from'=id_from
 
-  public static final byte[] REL_FROM = Bytes.toBytes("from");
-  public static final byte[] REL_TO   = Bytes.toBytes("to");
+  public static final byte[] FOLLOWS_TABLE_NAME = Bytes.toBytes("follows");
+  public static final byte[] FOLLOWED_TABLE_NAME = Bytes.toBytes("followedBy");
+  public static final byte[] RELATION_FAM = Bytes.toBytes("f");
+  public static final byte[] FROM = Bytes.toBytes("from");
+  public static final byte[] TO = Bytes.toBytes("to");
 
   private static final int KEY_WIDTH = 2 * Md5Utils.MD5_LENGTH;
 
@@ -36,7 +38,15 @@ public class RelationsDAO {
     this.pool = pool;
   }
 
-  public static byte[] mkFollowsRowKey(String a, String b) {
+  public static byte[] mkRowKey(String a) {
+    byte[] ahash = Md5Utils.md5sum(a);
+    byte[] rowkey = new byte[KEY_WIDTH];
+
+    Bytes.putBytes(rowkey, 0, ahash, 0, ahash.length);
+    return rowkey;
+  }
+
+  public static byte[] mkRowKey(String a, String b) {
     byte[] ahash = Md5Utils.md5sum(a);
     byte[] bhash = Md5Utils.md5sum(b);
     byte[] rowkey = new byte[KEY_WIDTH];
@@ -44,17 +54,6 @@ public class RelationsDAO {
     int offset = 0;
     offset = Bytes.putBytes(rowkey, offset, ahash, 0, ahash.length);
     Bytes.putBytes(rowkey, offset, bhash, 0, bhash.length);
-    return rowkey;
-  }
-
-  public static byte[] mkFollowedRowKey(String b, String a) {
-    byte[] bhash = Md5Utils.md5sum(b);
-    byte[] ahash = Md5Utils.md5sum(a);
-    byte[] rowkey = new byte[KEY_WIDTH];
-
-    int offset = 0;
-    offset = Bytes.putBytes(rowkey, offset, bhash, 0, bhash.length);
-    Bytes.putBytes(rowkey, offset, ahash, 0, ahash.length);
     return rowkey;
   }
 
@@ -66,98 +65,91 @@ public class RelationsDAO {
     return result;
   }
 
-  public void addFollows(String from, String to) throws IOException {
-
-    HTableInterface followers = pool.getTable(FOLLOWS_TABLE_NAME);
-
-    Put p = new Put(mkFollowsRowKey(from, to));
-    p.add(FOLLOWS_FAM, REL_FROM, Bytes.toBytes(from));
-    p.add(FOLLOWS_FAM, REL_TO, Bytes.toBytes(to));
-    followers.put(p);
-
-    followers.close();
+  public void addFollows(String fromId, String toId) throws IOException {
+    addRelation(FOLLOWS_TABLE_NAME, fromId, toId);
   }
 
-  public void addFollowed(String from, String to) throws IOException {
-
-    HTableInterface followed = pool.getTable(FOLLOWED_TABLE_NAME);
-
-    Put p = new Put(mkFollowedRowKey(from, to));
-    p.add(FOLLOWED_FAM, REL_FROM, Bytes.toBytes(from));
-    p.add(FOLLOWED_FAM, REL_TO, Bytes.toBytes(to));
-    followed.put(p);
-
-    followed.close();
+  public void addFollowedBy(String fromId, String toId) throws IOException {
+    addRelation(FOLLOWED_TABLE_NAME, fromId, toId);
   }
 
-  public List<HBaseIA.TwitBase.model.Relation> listFollows() throws IOException {
+  public void addRelation(byte[] table, String fromId, String toId) throws IOException {
 
-    HTableInterface follows = pool.getTable(FOLLOWS_TABLE_NAME);
+    HTableInterface t = pool.getTable(table);
 
-    ResultScanner results = follows.getScanner(FOLLOWS_FAM);
+    Put p = new Put(mkRowKey(fromId, toId));
+    p.add(RELATION_FAM, FROM, Bytes.toBytes(fromId));
+    p.add(RELATION_FAM, TO, Bytes.toBytes(toId));
+    t.put(p);
+
+    t.close();
+  }
+
+  public List<HBaseIA.TwitBase.model.Relation> listFollows(String fromId) throws IOException {
+    return listRelations(FOLLOWS_TABLE_NAME, fromId);
+  }
+
+  public List<HBaseIA.TwitBase.model.Relation> listFollowedBy(String fromId) throws IOException {
+    return listRelations(FOLLOWED_TABLE_NAME, fromId);
+  }
+
+  public List<HBaseIA.TwitBase.model.Relation> listRelations(byte[] table, String fromId) throws IOException {
+
+    HTableInterface t = pool.getTable(table);
+    String rel = (Bytes.equals(table, FOLLOWS_TABLE_NAME)) ? "->" : "<-";
+
+    byte[] startKey = mkRowKey(fromId);
+    byte[] endKey = Arrays.copyOf(startKey, startKey.length);
+    endKey[Md5Utils.MD5_LENGTH-1]++;
+    Scan scan = new Scan(startKey, endKey);
+    scan.addColumn(RELATION_FAM, TO);
+    scan.setMaxVersions(1);
+
+    ResultScanner results = t.getScanner(scan);
     List<HBaseIA.TwitBase.model.Relation> ret
       = new ArrayList<HBaseIA.TwitBase.model.Relation>();
     for (Result r : results) {
-      String from = Bytes.toString(
-        r.getColumnLatest(FOLLOWS_FAM, REL_FROM).getValue());
-      String to = Bytes.toString(
-        r.getColumnLatest(FOLLOWS_FAM, REL_TO).getValue());
-      ret.add(new Relation("->", from, to));
+      KeyValue kv = r.getColumnLatest(RELATION_FAM, TO);
+      String toId = Bytes.toString(kv.getValue());
+      ret.add(new Relation(rel, fromId, toId));
     }
 
-    follows.close();
-    return ret;
-  }
-
-  public List<HBaseIA.TwitBase.model.Relation> listFollowed() throws IOException {
-
-    HTableInterface followed = pool.getTable(FOLLOWED_TABLE_NAME);
-
-    ResultScanner results = followed.getScanner(FOLLOWED_FAM);
-    List<HBaseIA.TwitBase.model.Relation> ret
-      = new ArrayList<HBaseIA.TwitBase.model.Relation>();
-    for (Result r : results) {
-      String from = Bytes.toString(
-        r.getColumnLatest(FOLLOWED_FAM, REL_FROM).getValue());
-      String to = Bytes.toString(
-        r.getColumnLatest(FOLLOWED_FAM, REL_TO).getValue());
-      ret.add(new Relation("<-", from, to));
-    }
-
-    followed.close();
+    t.close();
     return ret;
   }
 
   @SuppressWarnings("unused")
-  public long followedCountScan (String user) throws IOException {
+  public long followedByCountScan (String user) throws IOException {
     HTableInterface followed = pool.getTable(FOLLOWED_TABLE_NAME);
 
     final byte[] startKey = Md5Utils.md5sum(user);
     final byte[] endKey = Arrays.copyOf(startKey, startKey.length);
     endKey[endKey.length-1]++;
+    Scan scan = new Scan(startKey, endKey);
+    scan.setMaxVersions(1);
 
     long sum = 0;
-    ResultScanner rs = followed.getScanner(new Scan(startKey, endKey));
+    ResultScanner rs = followed.getScanner(scan);
     for(Result r : rs) {
       sum++;
     }
     return sum;
   }
 
-  public long followedCount (String user) throws Throwable {
+  public long followedByCount (final String userId) throws Throwable {
     HTableInterface followed = pool.getTable(FOLLOWED_TABLE_NAME);
 
-    final byte[] startKey = Md5Utils.md5sum(user);
+    final byte[] startKey = Md5Utils.md5sum(userId);
     final byte[] endKey = Arrays.copyOf(startKey, startKey.length);
     endKey[endKey.length-1]++;
 
     Batch.Call<RelationCountProtocol, Long> callable =
       new Batch.Call<RelationCountProtocol, Long>() {
-      @Override
-      public Long call(RelationCountProtocol instance)
-      throws IOException {
-        return instance.followedCount(startKey, endKey);
-      }
+        @Override
+        public Long call(RelationCountProtocol instance)
+            throws IOException {
+          return instance.followedByCount(userId);
+        }
     };
 
     Map<byte[], Long> results =

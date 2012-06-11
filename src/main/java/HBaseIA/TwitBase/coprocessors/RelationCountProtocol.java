@@ -5,5 +5,5 @@ import java.io.IOException;
 import org.apache.hadoop.hbase.ipc.CoprocessorProtocol;
 
 public interface RelationCountProtocol extends CoprocessorProtocol {
-  public long followedCount(byte[] startKey, byte[] endKey) throws IOException;
+  public long followedByCount(String userId) throws IOException;
 }
