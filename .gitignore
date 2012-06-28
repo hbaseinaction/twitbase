@@ -1,11 +1,4 @@
-*jar
-lib
 target
-classes
-native
-.lein-failures
-checkouts
-.lein-deps-sum
 **/part-*
 **/_SUCCESS
 **/.*.crc

@@ -19,8 +19,6 @@ Utilities for interacting with TwitBase include:
  - <tt>HBaseIA.TwitBase.cli.InitTables</tt> :: create TwitBase tables
  - <tt>HBaseIA.TwitBase.cli.TwitsTool</tt> :: tool for managing Twits
  - <tt>HBaseIA.TwitBase.cli.UsersTool</tt> :: tool for managing Users
- - <tt>HBaseIA.TwitBase.cli.LoadUsers</tt> :: bulk-load random Users
- - <tt>HBaseIA.TwitBase.cli.LoadTwits</tt> :: bulk-load random Twits
 
 The following MapReduce jobs can be launched the same way:
 
