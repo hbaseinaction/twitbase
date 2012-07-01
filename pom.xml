@@ -8,13 +8,11 @@
   <artifactId>HBaseIA</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <name>HBaseIA</name>
-  <description>Code and examples pertaining to HBase In Action</description>
+  <description>Code pertaining to the TwitBase example in  HBase In Action</description>
 
-  <scm>
-    <connection>scm:git:git://github.com/ndimiduk/HBaseIA.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/ndimiduk/HBaseIA.git</developerConnection>
-    <url>https://github.com/ndimiduk/HBaseIA</url>
-  </scm>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
   <build>
     <plugins>
