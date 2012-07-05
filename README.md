@@ -2,7 +2,7 @@
 
 [http://www.manning.com/dimidukkhurana][0]
 
-## Usage
+## Compiling the project
 
 Code is managed by maven. Be sure to install maven on your platform
 before running these commands. Also be aware that HBase is not yet
@@ -15,24 +15,38 @@ To build a self-contained jar:
 
     $ mvn assembly:assembly
 
+The jar created using this by default will allow you to interact with
+HBase running in standalone mode on your local machine. If you want
+to interact with a remote (possibly fully distributed) HBase
+deployment, you can put your hbase-site.xml file in the src/main/resrouces
+directory before compiling the jar.
+
+## Using TwitBase
+
 TwitBase applications can be run using:
 
     $ java -cp target/HBaseIA-1.0.0-SNAPSHOT-jar-with-dependencies.jar <app> [options...]
 
 Utilities for interacting with TwitBase include:
 
- - `HBaseIA.TwitBase.cli.InitTables` :: create TwitBase tables
- - `HBaseIA.TwitBase.cli.TwitsTool` :: tool for managing Twits
- - `HBaseIA.TwitBase.cli.UsersTool` :: tool for managing Users
+ - `TwitBase.cli.InitTables` : create TwitBase tables
+ - `TwitBase.cli.TwitsTool` : tool for managing Twits
+ - `TwitBase.cli.UsersTool` : tool for managing Users
 
 The following MapReduce jobs can be launched the same way:
 
- - `HBaseIA.TwitBase.mapreduce.TimeSpent` :: run TimeSpent log
+ - `TwitBase.mapreduce.TimeSpent` : run TimeSpent log
    processing MR job
- - `HBaseIA.TwitBase.mapreduce.CountShakespeare` :: run
+ - `TwitBase.mapreduce.CountShakespeare` : run
    Shakespearean counter MR job
- - `HBaseIA.TwitBase.mapreduce.HamletTagger` :: run
+ - `TwitBase.mapreduce.HamletTagger` : run
    hamlet-tagging MR job
+
+## Other utilities and scripts
+
+The following utilities are available for you to play with:
+
+ - 'utils.TablePreSplitter' : create pre-split table
 
 ## License
 
