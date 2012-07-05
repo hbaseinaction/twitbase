@@ -46,7 +46,7 @@ The following MapReduce jobs can be launched the same way:
 
 The following utilities are available for you to play with:
 
- - 'utils.TablePreSplitter' : create pre-split table
+ - `utils.TablePreSplitter` : create pre-split table
 
 ## License
 
