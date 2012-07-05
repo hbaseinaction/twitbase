@@ -1,4 +1,4 @@
-package HBaseIA.TwitBase.cli;
+package TwitBase.cli;
 
 import java.io.IOException;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.hadoop.hbase.client.HTablePool;
 import org.apache.log4j.Logger;
 
-import HBaseIA.TwitBase.hbase.UsersDAO;
-import HBaseIA.TwitBase.model.User;
+import TwitBase.hbase.UsersDAO;
+import TwitBase.model.User;
 
 public class UsersTool {
 

@@ -1,4 +1,4 @@
-package HBaseIA.TwitBase.model;
+package TwitBase.model;
 
 public abstract class User {
 

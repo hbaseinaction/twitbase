@@ -1,4 +1,4 @@
-package HBaseIA.TwitBase.model;
+package TwitBase.model;
 
 import org.joda.time.DateTime;
 

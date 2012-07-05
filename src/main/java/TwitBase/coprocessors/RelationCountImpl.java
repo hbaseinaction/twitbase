@@ -1,7 +1,7 @@
-package HBaseIA.TwitBase.coprocessors;
+package TwitBase.coprocessors;
 
-import static HBaseIA.TwitBase.hbase.RelationsDAO.FROM;
-import static HBaseIA.TwitBase.hbase.RelationsDAO.RELATION_FAM;
+import static TwitBase.hbase.RelationsDAO.FROM;
+import static TwitBase.hbase.RelationsDAO.RELATION_FAM;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import org.apache.hadoop.hbase.coprocessor.RegionCoprocessorEnvironment;
 import org.apache.hadoop.hbase.filter.PrefixFilter;
 import org.apache.hadoop.hbase.regionserver.InternalScanner;
 
-import HBaseIA.TwitBase.Md5Utils;
+import utils.Md5Utils;
 
 public class RelationCountImpl
   extends BaseEndpointCoprocessor implements RelationCountProtocol {

@@ -1,4 +1,4 @@
-package HBaseIA.TwitBase.cli;
+package TwitBase.cli;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -7,9 +7,9 @@ import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.util.Bytes;
 
-import HBaseIA.TwitBase.hbase.RelationsDAO;
-import HBaseIA.TwitBase.hbase.TwitsDAO;
-import HBaseIA.TwitBase.hbase.UsersDAO;
+import TwitBase.hbase.RelationsDAO;
+import TwitBase.hbase.TwitsDAO;
+import TwitBase.hbase.UsersDAO;
 
 public class InitTables {
 

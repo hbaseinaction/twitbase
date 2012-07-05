@@ -1,4 +1,4 @@
-package HBaseIA.TwitBase.mapreduce;
+package TwitBase.mapreduce;
 
 import java.io.IOException;
 import java.util.Iterator;

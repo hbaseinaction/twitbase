@@ -1,4 +1,4 @@
-package HBaseIA.TwitBase;
+package utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
