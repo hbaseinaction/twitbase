@@ -18,12 +18,20 @@ To build a self-contained jar:
 The jar created using this by default will allow you to interact with
 HBase running in standalone mode on your local machine. If you want
 to interact with a remote (possibly fully distributed) HBase
-deployment, you can put your hbase-site.xml file in the src/main/resrouces
+deployment, you can put your `hbase-site.xml` file in the src/main/resrouces
 directory before compiling the jar.
 
 ## Using TwitBase
 
-TwitBase applications can be run using:
+We have provided a launcher script to run TwitBase and the utilities
+that the HBaseIA project comes with.
+
+    $ bin/launcher
+
+Just run the launcher without any arguments and it'll print out the
+usage information.
+
+TwitBase applications can also be run using java directly:
 
     $ java -cp target/HBaseIA-1.0.0-SNAPSHOT-jar-with-dependencies.jar <app> [options...]
 
