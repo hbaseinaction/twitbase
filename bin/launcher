@@ -1,0 +1,43 @@
+#! /usr/bin/env bash
+
+if [ $# = 0 ]; then
+  echo "Usage: launcher <command>"
+  echo "where <command> is an option from one of the following:"
+  echo ""
+  echo "TwitBase tools"
+  echo "  init    : Create tables for TwitBase"
+  echo "  twits   : Tool for managing twits"
+  echo "  users   : Tool for managing users"
+  echo ""
+  echo "MapReduce jobs"
+  echo "  timespent        : Run the TimeSpent log processing MapReduce job"
+  echo "  countshakespeare : Run the Shakespearean counter MapReduce job"
+  echo "  hamlettagger     : Run the Hamlet tagging MapReduce job"
+  echo ""
+  echo "Utils"
+  echo "  tablepresplitter : Create a pre-split table"
+  exit 1
+fi
+
+COMMAND=$1
+
+# Choose class to run
+if [ "$COMMAND" = "init" ] ; then
+  CLASS='TwitBase.cli.InitTables'
+elif [ "$COMMAND" = "twits" ] ; then
+  CLASS='TwitBase.cli.TwitsTool'
+elif [ "$COMMAND" = "users" ] ; then
+  CLASS='TwitBase.cli.UsersTool'
+elif [ "$COMMAND" = "timespent" ] ; then
+  CLASS='TwitBase.mapreduce.TimeSpent'
+elif [ "$COMMAND" = "countshakespeare" ] ; then
+  CLASS='TwitBase.mapreduce.CountShakespeare'
+elif [ "$COMMAND" = "hamlettagger" ] ; then
+  CLASS='TwitBase.mapreduce.HamletTagger'
+elif [ "$COMMAND" = "tablepresplitter" ] ; then
+  CLASS='utils.TablePreSplitter'
+else
+  CLASS=$COMMAND
+fi
+
+java -cp target/HBaseIA-1.0.0-SNAPSHOT-jar-with-dependencies.jar $CLASS "$@"
