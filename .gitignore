@@ -1,4 +1,7 @@
 target
+.classpath
+.project
+.settings
 **/part-*
 **/_SUCCESS
 **/.*.crc
