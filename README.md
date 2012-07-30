@@ -41,6 +41,8 @@ Utilities for interacting with TwitBase include:
  - `TwitBase.cli.InitTables` : create TwitBase tables
  - `TwitBase.cli.TwitsTool` : tool for managing Twits
  - `TwitBase.cli.UsersTool` : tool for managing Users
+ - `TwitBase.cli.LoadUsers` : tool for loading random Users
+ - `TwitBase.cli.LoadTwits` : tool for loading random Twits
 
 The following MapReduce jobs can be launched the same way:
 
