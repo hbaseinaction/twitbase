@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>HBaseIA</groupId>
   <artifactId>twitbase</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>TwitBase</name>
   <url>http://www.manning.com/dimidukkhurana/</url>
   <description>TwitBase is a running example used throughout HBase In Action</description>
