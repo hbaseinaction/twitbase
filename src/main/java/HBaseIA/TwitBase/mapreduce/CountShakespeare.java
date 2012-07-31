@@ -1,4 +1,4 @@
-package TwitBase.mapreduce;
+package HBaseIA.TwitBase.mapreduce;
 
 import java.util.Random;
 
@@ -15,7 +15,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
-import TwitBase.hbase.TwitsDAO;
+import HBaseIA.TwitBase.hbase.TwitsDAO;
 
 public class CountShakespeare {
 

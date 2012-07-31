@@ -1,4 +1,4 @@
-package TwitBase.mapreduce;
+package HBaseIA.TwitBase.mapreduce;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -16,8 +16,8 @@ import org.apache.hadoop.hbase.mapreduce.TableReducer;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.mapreduce.Job;
 
-import TwitBase.hbase.TwitsDAO;
-import TwitBase.hbase.UsersDAO;
+import HBaseIA.TwitBase.hbase.TwitsDAO;
+import HBaseIA.TwitBase.hbase.UsersDAO;
 
 public class HamletTagger {
 

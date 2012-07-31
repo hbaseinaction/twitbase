@@ -1,9 +1,9 @@
-package TwitBase.coprocessors;
+package HBaseIA.TwitBase.coprocessors;
 
-import static TwitBase.hbase.RelationsDAO.FOLLOWS_TABLE_NAME;
-import static TwitBase.hbase.RelationsDAO.FROM;
-import static TwitBase.hbase.RelationsDAO.RELATION_FAM;
-import static TwitBase.hbase.RelationsDAO.TO;
+import static HBaseIA.TwitBase.hbase.RelationsDAO.FOLLOWS_TABLE_NAME;
+import static HBaseIA.TwitBase.hbase.RelationsDAO.FROM;
+import static HBaseIA.TwitBase.hbase.RelationsDAO.RELATION_FAM;
+import static HBaseIA.TwitBase.hbase.RelationsDAO.TO;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import org.apache.hadoop.hbase.coprocessor.RegionCoprocessorEnvironment;
 import org.apache.hadoop.hbase.regionserver.wal.WALEdit;
 import org.apache.hadoop.hbase.util.Bytes;
 
-import TwitBase.hbase.RelationsDAO;
+import HBaseIA.TwitBase.hbase.RelationsDAO;
 
 public class FollowsObserver extends BaseRegionObserver {
 

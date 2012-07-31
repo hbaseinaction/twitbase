@@ -1,4 +1,4 @@
-package TwitBase.model;
+package HBaseIA.TwitBase.model;
 
 public abstract class Relation {
 

@@ -1,4 +1,4 @@
-package TwitBase.hbase;
+package HBaseIA.TwitBase.hbase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import org.apache.hadoop.hbase.client.coprocessor.Batch;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import utils.Md5Utils;
-import TwitBase.coprocessors.RelationCountProtocol;
+import HBaseIA.TwitBase.coprocessors.RelationCountProtocol;
 
 public class RelationsDAO {
 
@@ -85,15 +85,15 @@ public class RelationsDAO {
     t.close();
   }
 
-  public List<TwitBase.model.Relation> listFollows(String fromId) throws IOException {
+  public List<HBaseIA.TwitBase.model.Relation> listFollows(String fromId) throws IOException {
     return listRelations(FOLLOWS_TABLE_NAME, fromId);
   }
 
-  public List<TwitBase.model.Relation> listFollowedBy(String fromId) throws IOException {
+  public List<HBaseIA.TwitBase.model.Relation> listFollowedBy(String fromId) throws IOException {
     return listRelations(FOLLOWED_TABLE_NAME, fromId);
   }
 
-  public List<TwitBase.model.Relation> listRelations(byte[] table, String fromId) throws IOException {
+  public List<HBaseIA.TwitBase.model.Relation> listRelations(byte[] table, String fromId) throws IOException {
 
     HTableInterface t = pool.getTable(table);
     String rel = (Bytes.equals(table, FOLLOWS_TABLE_NAME)) ? "->" : "<-";
@@ -106,8 +106,8 @@ public class RelationsDAO {
     scan.setMaxVersions(1);
 
     ResultScanner results = t.getScanner(scan);
-    List<TwitBase.model.Relation> ret
-      = new ArrayList<TwitBase.model.Relation>();
+    List<HBaseIA.TwitBase.model.Relation> ret
+      = new ArrayList<HBaseIA.TwitBase.model.Relation>();
     for (Result r : results) {
       KeyValue kv = r.getColumnLatest(RELATION_FAM, TO);
       String toId = Bytes.toString(kv.getValue());
@@ -166,7 +166,7 @@ public class RelationsDAO {
     return sum;
   }
 
-  private static class Relation extends TwitBase.model.Relation {
+  private static class Relation extends HBaseIA.TwitBase.model.Relation {
 
     private Relation(String relation, String from, String to) {
       this.relation = relation;

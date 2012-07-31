@@ -1,7 +1,7 @@
-package TwitBase.coprocessors;
+package HBaseIA.TwitBase.coprocessors;
 
-import static TwitBase.hbase.RelationsDAO.FROM;
-import static TwitBase.hbase.RelationsDAO.RELATION_FAM;
+import static HBaseIA.TwitBase.hbase.RelationsDAO.FROM;
+import static HBaseIA.TwitBase.hbase.RelationsDAO.RELATION_FAM;
 
 import java.io.IOException;
 import java.util.ArrayList;

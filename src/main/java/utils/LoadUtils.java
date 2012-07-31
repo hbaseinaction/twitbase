@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import TwitBase.cli.LoadUsers;
+import HBaseIA.TwitBase.LoadUsers;
 
 public class LoadUtils {
 

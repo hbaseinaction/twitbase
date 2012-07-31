@@ -19,8 +19,8 @@ To build a self-contained jar:
 The jar created using this by default will allow you to interact with
 HBase running in standalone mode on your local machine. If you want
 to interact with a remote (possibly fully distributed) HBase
-deployment, you can put your `hbase-site.xml` file in the src/main/resources
-directory before compiling the jar.
+deployment, you can put your `hbase-site.xml` file in the
+`src/main/resources` directory before compiling the jar.
 
 ## Using TwitBase
 
@@ -34,23 +34,23 @@ usage information.
 
 TwitBase applications can also be run using java directly:
 
-    $ java -cp target/HBaseIA-1.0.0-SNAPSHOT-jar-with-dependencies.jar <app> [options...]
+    $ java -cp target/twitbase-1.0.0-SNAPSHOT-jar-with-dependencies.jar <app> [options...]
 
 Utilities for interacting with TwitBase include:
 
- - `TwitBase.cli.InitTables` : create TwitBase tables
- - `TwitBase.cli.TwitsTool` : tool for managing Twits
- - `TwitBase.cli.UsersTool` : tool for managing Users
- - `TwitBase.cli.LoadUsers` : tool for loading random Users
- - `TwitBase.cli.LoadTwits` : tool for loading random Twits
+ - `HBaseIA.TwitBase.InitTables` : create TwitBase tables
+ - `HBaseIA.TwitBase.TwitsTool` : tool for managing Twits
+ - `HBaseIA.TwitBase.UsersTool` : tool for managing Users
+ - `HBaseIA.TwitBase.LoadUsers` : tool for loading random Users
+ - `HBaseIA.TwitBase.LoadTwits` : tool for loading random Twits
 
 The following MapReduce jobs can be launched the same way:
 
- - `TwitBase.mapreduce.TimeSpent` : run TimeSpent log
+ - `HBaseIA.TwitBase.mapreduce.TimeSpent` : run TimeSpent log
    processing MR job
- - `TwitBase.mapreduce.CountShakespeare` : run
+ - `HBaseIA.TwitBase.mapreduce.CountShakespeare` : run
    Shakespearean counter MR job
- - `TwitBase.mapreduce.HamletTagger` : run
+ - `HBaseIA.TwitBase.mapreduce.HamletTagger` : run
    hamlet-tagging MR job
 
 ## Other utilities and scripts

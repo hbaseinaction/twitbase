@@ -1,4 +1,4 @@
-package TwitBase.cli;
+package HBaseIA.TwitBase;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.apache.hadoop.hbase.client.HTablePool;
 
 import utils.LoadUtils;
 
-import TwitBase.hbase.UsersDAO;
+import HBaseIA.TwitBase.hbase.UsersDAO;
 
 public class LoadUsers {
 

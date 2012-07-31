@@ -1,4 +1,4 @@
-package TwitBase.cli;
+package HBaseIA.TwitBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.hadoop.hbase.client.HTablePool;
 import org.apache.log4j.Logger;
 
-import TwitBase.hbase.RelationsDAO;
-import TwitBase.model.Relation;
+import HBaseIA.TwitBase.hbase.RelationsDAO;
+import HBaseIA.TwitBase.model.Relation;
 
 public class RelationsTool {
 

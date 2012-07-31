@@ -25,7 +25,7 @@ public class TablePreSplitter {
 
 
   public boolean createPreSplitTable(String tableName, String family, String startKey, String endKey, int splits) throws IOException {
-    List<String> l = new ArrayList();
+    List<String> l = new ArrayList<String>();
     l.add(family);
     return createPreSplitTable(tableName, l, startKey, endKey, splits);
   }

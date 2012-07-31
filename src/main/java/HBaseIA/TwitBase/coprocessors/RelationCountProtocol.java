@@ -1,4 +1,4 @@
-package TwitBase.coprocessors;
+package HBaseIA.TwitBase.coprocessors;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package TwitBase.hbase;
+package HBaseIA.TwitBase.hbase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -98,7 +98,7 @@ public class TwitsDAO {
     twits.close();
   }
 
-  public TwitBase.model.Twit getTwit(String user, DateTime dt) throws IOException {
+  public HBaseIA.TwitBase.model.Twit getTwit(String user, DateTime dt) throws IOException {
 
     HTableInterface twits = pool.getTable(TABLE_NAME);
 
@@ -112,12 +112,12 @@ public class TwitsDAO {
     return t;
   }
 
-  public List<TwitBase.model.Twit> list(String user) throws IOException {
+  public List<HBaseIA.TwitBase.model.Twit> list(String user) throws IOException {
 
     HTableInterface twits = pool.getTable(TABLE_NAME);
 
     ResultScanner results = twits.getScanner(mkScan(user));
-    List<TwitBase.model.Twit> ret = new ArrayList<TwitBase.model.Twit>();
+    List<HBaseIA.TwitBase.model.Twit> ret = new ArrayList<HBaseIA.TwitBase.model.Twit>();
     for(Result r : results) {
       ret.add(new Twit(r));
     }
@@ -126,7 +126,7 @@ public class TwitsDAO {
     return ret;
   }
 
-  private static class Twit extends TwitBase.model.Twit {
+  private static class Twit extends HBaseIA.TwitBase.model.Twit {
 
     private Twit(Result r) {
       this(

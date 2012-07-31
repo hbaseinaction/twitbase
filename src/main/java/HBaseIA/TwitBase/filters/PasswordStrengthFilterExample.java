@@ -1,6 +1,7 @@
-package TwitBase.filters;
+package HBaseIA.TwitBase.filters;
 
-import TwitBase.hbase.UsersDAO;
+import HBaseIA.TwitBase.hbase.UsersDAO;
+
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.filter.*;
 import java.io.IOException;
