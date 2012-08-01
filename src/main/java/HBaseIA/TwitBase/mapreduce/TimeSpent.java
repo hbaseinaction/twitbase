@@ -71,31 +71,13 @@ public class TimeSpent {
     FileInputFormat.addInputPath(job, inputPath);
     FileOutputFormat.setOutputPath(job, outputPath);
 
-
-    //JobConf conf = new JobConf(TimeSpent.class);
-//    conf.setJobName("TimeSpent");
-//
-//    conf.setOutputKeyClass(Text.class);
-//    conf.setOutputValueClass(LongWritable.class);
-//
-//    conf.setMapperClass(Map.class);
-//    conf.setCombinerClass(Reduce.class);
-//    conf.setReducerClass(Reduce.class);
-//
-//    conf.setInputFormat(TextInputFormat.class);
-//    conf.setOutputFormat(TextOutputFormat.class);
-//
-//    FileInputFormat.setInputPaths(conf, inputPath);
-//    FileOutputFormat.setOutputPath(conf, outputPath);
-
     FileSystem fs = outputPath.getFileSystem(conf);
     if (fs.exists(outputPath)) {
       System.out.println("Deleting output path before proceeding.");
       fs.delete(outputPath, true);
     }
 
-    job.waitForCompletion(true);
+    System.exit(job.waitForCompletion(true) ? 0 : 1);
 
-//    JobClient.runJob(conf);
   }
 }

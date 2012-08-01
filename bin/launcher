@@ -46,4 +46,5 @@ else
   CLASS=$COMMAND
 fi
 
-java -cp target/twitbase-1.0.0-SNAPSHOT-jar-with-dependencies.jar $CLASS "$@"
+shift 
+java -cp target/twitbase-1.0.0-jar-with-dependencies.jar $CLASS "$@"

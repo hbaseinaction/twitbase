@@ -31,12 +31,10 @@ public class HamletTagger {
       return rand.nextBoolean();
     }
 
-    @Override
     protected void setup(Context context) {
       rand = new Random(System.currentTimeMillis());
     }
 
-    @Override
     protected void map(
         ImmutableBytesWritable rowkey,
         Result result,
