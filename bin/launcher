@@ -47,4 +47,4 @@ else
 fi
 
 shift 
-java -cp target/twitbase-1.0.0-jar-with-dependencies.jar $CLASS "$@"
+java -cp target/twitbase-1.0.0.jar $CLASS "$@"
