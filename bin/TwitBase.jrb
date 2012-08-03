@@ -1,5 +1,3 @@
-#!/usr/bin/env hbase shell
-
 def list_users()
   users_table = @hbase.table('users', @formatter)
   scan = {"COLUMNS" => ['info:user', 'info:name', 'info:email']}
