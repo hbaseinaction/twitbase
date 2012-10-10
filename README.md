@@ -1,4 +1,4 @@
-# HBase In Action
+# HBase In Action: TwitBase
 
 [http://www.manning.com/dimidukkhurana][0]
 
@@ -14,7 +14,7 @@ utility to be of use.
 
 To build a self-contained jar:
 
-    $ mvn assembly:assembly
+    $ mvn package
 
 The jar created using this by default will allow you to interact with
 HBase running in standalone mode on your local machine. If you want
@@ -34,7 +34,7 @@ usage information.
 
 TwitBase applications can also be run using java directly:
 
-    $ java -cp target/twitbase-1.0.0-SNAPSHOT-jar-with-dependencies.jar <app> [options...]
+    $ java -cp target/twitbase-1.0.0.jar <app> [options...]
 
 Utilities for interacting with TwitBase include:
 
