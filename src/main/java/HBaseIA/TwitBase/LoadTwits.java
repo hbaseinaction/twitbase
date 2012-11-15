@@ -3,6 +3,9 @@ package HBaseIA.TwitBase;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HTablePool;
 import org.joda.time.DateTime;
 
@@ -39,7 +42,17 @@ public class LoadTwits {
       System.exit(0);
     }
 
-    HTablePool pool = new HTablePool();
+    Configuration conf = HBaseConfiguration.create();
+    HBaseAdmin admin = new HBaseAdmin(conf);
+
+    if (!admin.tableExists(UsersDAO.TABLE_NAME) ||
+        !admin.tableExists(TwitsDAO.TABLE_NAME)) {
+      System.out.println("Please use the InitTables utility to create " +
+                         "destination tables first.");
+      System.exit(0);
+    }
+
+    HTablePool pool = new HTablePool(conf, Integer.MAX_VALUE);
     UsersDAO users = new UsersDAO(pool);
     TwitsDAO twits = new TwitsDAO(pool);
 
