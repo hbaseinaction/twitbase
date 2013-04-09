@@ -55,7 +55,7 @@ public class InitTables {
     }
 
     if (admin.tableExists(UsersDAO.TABLE_NAME)) {
-      System.out.println("User table already exisis.");
+      System.out.println("User table already exists.");
     } else {
       System.out.println("Creating User table...");
       HTableDescriptor desc = new HTableDescriptor(UsersDAO.TABLE_NAME);
@@ -66,7 +66,7 @@ public class InitTables {
     }
 
     if (admin.tableExists(TwitsDAO.TABLE_NAME)) {
-      System.out.println("Twits table already exisis.");
+      System.out.println("Twits table already exists.");
     } else {
       System.out.println("Creating Twits table...");
       HTableDescriptor desc = new HTableDescriptor(TwitsDAO.TABLE_NAME);
@@ -78,7 +78,7 @@ public class InitTables {
     }
 
     if (admin.tableExists(RelationsDAO.FOLLOWS_TABLE_NAME)) {
-      System.out.println("Follows table already exisis.");
+      System.out.println("Follows table already exists.");
     } else {
       System.out.println("Creating Follows table...");
       HTableDescriptor desc = new HTableDescriptor(RelationsDAO.FOLLOWS_TABLE_NAME);
@@ -90,7 +90,7 @@ public class InitTables {
     }
 
     if (admin.tableExists(RelationsDAO.FOLLOWED_TABLE_NAME)) {
-        System.out.println("Followed table already exisis.");
+        System.out.println("Followed table already exists.");
       } else {
         System.out.println("Creating Followed table...");
         HTableDescriptor desc = new HTableDescriptor(RelationsDAO.FOLLOWED_TABLE_NAME);
