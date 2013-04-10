@@ -75,9 +75,10 @@ public class TwitsDAO {
 
   private static Scan mkScan(String user) {
     byte[] userHash = Md5Utils.md5sum(user);
-    byte[] startRow = Bytes.padTail(userHash, longLength); // 212d...866f00...
+    byte[] startRow = Bytes.padTail(userHash, longLength); // 212d...86ff00...
     byte[] stopRow = Bytes.padTail(userHash, longLength);
-    stopRow[Md5Utils.MD5_LENGTH-1]++;                      // 212d...867000...
+//  stopRow[bytes1.length - 1]++;                        // 21 2d...86 ff 00 WRONG
+		stopRow = Bytes.toBytes(Bytes.toLong(bytes2) + 1);   // 21 2d...87 00 00
 
     log.debug("Scan starting at: '" + to_str(startRow) + "'");
     log.debug("Scan stopping at: '" + to_str(stopRow) + "'");
